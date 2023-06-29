@@ -1,6 +1,7 @@
 import supabase from '../config/supabaseClient';
 import React, { useEffect, useState } from 'react';
 import { useTable } from 'react-table';
+import ExportCSV from './ExportCSV';
 
 const Table = () => {
     const [data, setData] = useState([]);
@@ -45,29 +46,32 @@ const Table = () => {
     } = useTable({ columns, data });
 
     return (
-        <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
-            <thead>
-                {headerGroups.map(headerGroup => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                        ))}
-                    </tr>
-                ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-                {rows.map(row => {
-                    prepareRow(row);
-                    return (
-                        <tr {...row.getRowProps()}>
-                            {row.cells.map(cell => (
-                                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+        <div>
+            <ExportCSV csvData={data} fileName={"test_data"} />
+            <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+                <thead>
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map(column => (
+                                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
                             ))}
                         </tr>
-                    );
-                })}
-            </tbody>
-        </table>
+                    ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                    {rows.map(row => {
+                        prepareRow(row);
+                        return (
+                            <tr {...row.getRowProps()}>
+                                {row.cells.map(cell => (
+                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                ))}
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
