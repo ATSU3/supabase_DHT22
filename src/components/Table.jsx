@@ -9,7 +9,7 @@ const Table = () => {
         const fetchData = async () => {
             let { data: sensorData, error } = await supabase
                 .from('test')
-                .select('temperature, humidity');
+                .select('temperature, humidity, created_at');
 
             if (error) console.error('Error fetching sensor data', error);
             else setData(sensorData);
@@ -27,6 +27,10 @@ const Table = () => {
             {
                 Header: 'Humidity',
                 accessor: 'humidity',
+            },
+            {
+                Header: 'Created At',
+                accessor: 'created_at',
             },
         ],
         []
