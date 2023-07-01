@@ -35,6 +35,13 @@ const Table = () => {
             {
                 Header: 'Created At',
                 accessor: 'created_at',
+                Cell: ({ value }) => {
+                    const dateObj = new Date(value);
+                    const date = dateObj.toLocaleDateString();
+                    let time = dateObj.toLocaleTimeString();
+                    // time = time.slice(0, time.lastIndexOf(":"));秒を消す
+                    return `${date} ${time}`;
+                }
             },
         ],
         []
