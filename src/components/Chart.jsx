@@ -90,9 +90,9 @@ const Chart = () => {
 
     return (
         <div style={{ overflowX: 'scroll', width: '100%' }}>
+            <Line options={options} data={chartData} />
             <button disabled={startIdx <= 0} onClick={() => setStartIdx(startIdx - 1)}>Previous</button>
             <button disabled={startIdx + MAX_DISPLAY_ITEMS >= sensorData.length} onClick={() => setStartIdx(startIdx + 1)}>Next</button>
-            <Line options={options} data={chartData} />
         </div>
     );
 };
