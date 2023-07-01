@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useTable } from 'react-table';
 import ExportCSV from './ExportCSV';
 
+const MAX_ROWS = 6;
+
 const Table = () => {
     const [data, setData] = useState([]);
+    const [numRows, setNumRows] = useState(MAX_ROWS);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,7 +46,7 @@ const Table = () => {
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data });
+    } = useTable({ columns, data: data.slice(0, numRows) });
 
     return (
         <div>
@@ -71,6 +74,12 @@ const Table = () => {
                     })}
                 </tbody>
             </table>
+            {numRows < data.length &&
+                <button onClick={() => setNumRows(numRows + MAX_ROWS)}>More</button>
+            }
+            {numRows > MAX_ROWS &&
+                <button onClick={() => setNumRows(numRows - MAX_ROWS)}>Less</button>
+            }
         </div>
     );
 };
