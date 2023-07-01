@@ -36,64 +36,65 @@ const options = {
     scales: {
         y: {
             ticks: {
-                stepSize: 10,  // Set the step size
-                beginAtZero: true, // start the scale at 0
+                stepSize: 10,
+                beginAtZero: true,
             }
         }
     }
 };
 
 const Chart = () => {
-    const [chartData, setChartData] = useState(null);
+    const [sensorData, setSensorData] = useState(null);
+    const [startIdx, setStartIdx] = useState(0);
+    const MAX_DISPLAY_ITEMS = 6;
 
     useEffect(() => {
         const fetchData = async () => {
-            let { data: sensorData, error } = await supabase
+            let { data, error } = await supabase
                 .from('test')
                 .select('temperature, humidity, created_at')
-                .order('created_at', { ascending: false })
-                .limit(8);
+                .order('created_at', { ascending: false });
 
             if (error) console.error('Error fetching sensor data', error);
             else {
-                sensorData.reverse();
-                const chartData = {
-                    labels: sensorData.map(data => new Date(data.created_at).toLocaleString()),
-                    datasets: [
-                        {
-                            label: 'Temperature',
-                            data: sensorData.map(data => data.temperature),
-                            borderColor: 'rgb(255, 99, 132)',
-                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                        },
-                        {
-                            label: 'Humidity',
-                            data: sensorData.map(data => data.humidity),
-                            borderColor: 'rgb(53, 162, 235)',
-                            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-                        },
-                    ],
-                };
-                setChartData(chartData);
+                data.reverse();
+                setSensorData(data);
+                setStartIdx(data.length > MAX_DISPLAY_ITEMS ? data.length - MAX_DISPLAY_ITEMS : 0);
             }
         };
 
         fetchData();
     }, []);
 
-    if (!chartData) {
+    if (!sensorData) {
         return null;
     }
 
+    const chartData = {
+        labels: sensorData.slice(startIdx, startIdx + MAX_DISPLAY_ITEMS).map(data => new Date(data.created_at).toLocaleString()),
+        datasets: [
+            {
+                label: 'Temperature',
+                data: sensorData.slice(startIdx, startIdx + MAX_DISPLAY_ITEMS).map(data => data.temperature),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            },
+            {
+                label: 'Humidity',
+                data: sensorData.slice(startIdx, startIdx + MAX_DISPLAY_ITEMS).map(data => data.humidity),
+                borderColor: 'rgb(53, 162, 235)',
+                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            },
+        ],
+    };
+
     return (
         <div style={{ overflowX: 'scroll', width: '100%' }}>
+            <button disabled={startIdx <= 0} onClick={() => setStartIdx(startIdx - 1)}>Previous</button>
+            <button disabled={startIdx + MAX_DISPLAY_ITEMS >= sensorData.length} onClick={() => setStartIdx(startIdx + 1)}>Next</button>
             <Line options={options} data={chartData} />
         </div>
     );
 };
 
 export default Chart
-
-
-
-
