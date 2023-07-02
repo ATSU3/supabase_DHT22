@@ -1,13 +1,30 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Chart from './components/Chart'
 import Table from './components/Table'
 
 function App() {
   return (
-    <div>
-      <Table />
-      <Chart />
-    </div>
-  )
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/table">Table</Link>
+            </li>
+            <li>
+              <Link to="/chart">Chart</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/table" element={<Table />} />
+          <Route path="/chart" element={<Chart />} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;
