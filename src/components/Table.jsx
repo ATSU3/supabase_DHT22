@@ -2,6 +2,7 @@ import supabase from '../config/supabaseClient';
 import React, { useEffect, useState } from 'react';
 import { useTable } from 'react-table';
 import ExportCSV from './ExportCSV';
+import '../scss/components/table.scss'
 
 const MAX_ROWS = 6;
 
@@ -58,7 +59,7 @@ const Table = () => {
     return (
         <div>
             <ExportCSV csvData={data} fileName={"test_data"} />
-            <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
+            <table className='table' {...getTableProps()} style={{ border: 'solid 1px blue' }}>
                 <thead>
                     {headerGroups.map(headerGroup => (
                         <tr {...headerGroup.getHeaderGroupProps()}>

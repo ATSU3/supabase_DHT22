@@ -2,13 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Chart from './components/Chart'
 import Table from './components/Table'
+import './scss/app.scss'
 
 function App() {
   return (
     <Router>
       <div>
         <nav>
-          <ul>
+          <ul className='box'>
             <li>
               <Link to="/table">Table</Link>
             </li>

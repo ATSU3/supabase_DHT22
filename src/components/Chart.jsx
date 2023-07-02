@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import supabase from "../config/supabaseClient"
+import '../scss/components/chart.scss'
 
 ChartJS.register(
     CategoryScale,
@@ -40,7 +41,8 @@ const options = {
                 beginAtZero: true,
             }
         }
-    }
+    },
+    aspectRatio: 1
 };
 
 const Chart = () => {
@@ -89,7 +91,7 @@ const Chart = () => {
     };
 
     return (
-        <div style={{ overflowX: 'scroll', width: '100%' }}>
+        <div className='chart'>
             <Line options={options} data={chartData} />
             <button disabled={startIdx <= 0} onClick={() => setStartIdx(startIdx - 1)}>Previous</button>
             <button disabled={startIdx + MAX_DISPLAY_ITEMS >= sensorData.length} onClick={() => setStartIdx(startIdx + 1)}>Next</button>
