@@ -59,6 +59,7 @@ const AreaTable = ({ area_id }) => {
 
     return (
         <div>
+            <div>Area: {area_id}</div>
             <ExportCSV csvData={data} fileName={"test_data"} />
             <table className='area-table' {...getTableProps()} style={{ border: 'solid 1px blue' }}>
                 <thead>
