@@ -2,9 +2,11 @@
     border-collapse: collapse;
     margin: 2%;
 
-    th,
+    th {
+        padding: 8px;
+    }
+
     td {
         border: 1px solid blue;
-        padding: 8px;
     }
 }
