@@ -1,9 +1,5 @@
 .table {
-    border-collapse: collapse;
-
-    th,
-    td {
-        border: 1px solid blue;
-        padding: 8px;
-    }
+    display: flex;
+    width: 80%;
+    margin: 0 auto;
 }

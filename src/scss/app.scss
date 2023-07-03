@@ -1,5 +1,9 @@
+* {
+    box-sizing: border-box;
+}
+
 .box {
     display: flex;
     justify-content: space-around;
-    list-style: none
+    list-style: none;
 }

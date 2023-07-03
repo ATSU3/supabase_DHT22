@@ -1,0 +1,10 @@
+.area-table {
+    border-collapse: collapse;
+    margin: 2%;
+
+    th,
+    td {
+        border: 1px solid blue;
+        padding: 8px;
+    }
+}
