@@ -55,6 +55,7 @@ const Chart = () => {
             let { data, error } = await supabase
                 .from('test')
                 .select('temperature, humidity, created_at')
+                .eq('area_id', 1)
                 .order('created_at', { ascending: false });
 
             if (error) console.error('Error fetching sensor data', error);
