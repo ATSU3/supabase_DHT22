@@ -8,6 +8,7 @@ const Table = () => {
         <div className='table'>
             <AreaTable area_id={1} />
             <AreaTable area_id={2} />
+            <AreaTable area_id={3} />
         </div>
     );
 };

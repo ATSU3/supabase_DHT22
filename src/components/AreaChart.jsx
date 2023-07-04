@@ -13,8 +13,6 @@ import { Line } from 'react-chartjs-2';
 import supabase from "../config/supabaseClient"
 import '../scss/components/area-chart.scss'
 
-// ... Same code as before for ChartJS.register and options ...
-
 ChartJS.register(
     CategoryScale,
     LinearScale,

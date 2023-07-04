@@ -7,6 +7,7 @@ const Chart = () => {
         <div className='chart'>
             <AreaChart area_id={1} />
             <AreaChart area_id={2} />
+            <AreaChart area_id={3} />
         </div>
     );
 };
