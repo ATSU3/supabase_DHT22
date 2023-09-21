@@ -1,7 +1,20 @@
 import supabase from '../config/supabaseClient';
 import '../scss/components/area-map.scss';
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { useRef, useState } from "react";
+import { useGLTF } from "@react-three/drei";
+
+const Model = ({ onModelClick }) => {
+    const gltf = useGLTF('/src/glb_models/sample.glb');
+
+    return (
+        <mesh
+            geometry={gltf.scene.children[0].geometry}
+            material={gltf.scene.children[0].material}
+            onClick={onModelClick}
+        />
+    );
+};
 
 const Box = ({ areaId, setDisplayData, ...props }) => {
     const ref = useRef();
@@ -73,6 +86,31 @@ const AreaMap = () => {
                 <Box areaId={3} position={[12, 0, 0]} setDisplayData={setDisplayData} />
             </Canvas>
             <SensorDataDisplay data={displayData} />
+
+            <p>[GLBモデルのimportテスト]</p>
+            <Canvas>
+                <ambientLight intensity={0.5} />
+                <Model onModelClick={() => {
+                    const fetchData = async () => {
+                        let { data: sensorData, error } = await supabase
+                            .from('test')
+                            .select('temperature, humidity, created_at')
+                            .eq('area_id', 1)
+                            .limit(1);
+
+                        if (error) {
+                            console.error('Error fetching sensor data', error);
+                            return;
+                        }
+
+                        if (sensorData && sensorData.length > 0) {
+                            const { temperature, humidity } = sensorData[0];
+                            setDisplayData({ areaId: 1, temperature, humidity });
+                        }
+                    };
+                    fetchData();
+                }} />
+            </Canvas>
         </div>
     );
 };
