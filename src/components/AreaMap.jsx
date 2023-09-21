@@ -5,14 +5,46 @@ import { useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
 import modelPath from './../glb_models/sample.glb';
 
+
+import { Vector2 } from 'three';
+
 const Model = ({ onModelClick }) => {
+    const meshRef = useRef();
+    const [startPosition, setStartPosition] = useState(new Vector2());
+    const [isDragging, setIsDragging] = useState(false);
+
     const gltf = useGLTF(modelPath);
+
+    const handlePointerDown = (event) => {
+        setIsDragging(true);
+        setStartPosition(new Vector2(event.clientX, event.clientY));
+    };
+
+    const handlePointerUp = () => {
+        setIsDragging(false);
+    };
+
+    const handlePointerMove = (event) => {
+        if (!isDragging) return;
+
+        const currentPosition = new Vector2(event.clientX, event.clientY);
+        const delta = currentPosition.sub(startPosition).multiplyScalar(0.0001); // 感度調整
+
+        meshRef.current.rotation.y += delta.x;
+        meshRef.current.rotation.x += delta.y;
+
+        setStartPosition(currentPosition);
+    };
 
     return (
         <mesh
+            ref={meshRef}
             geometry={gltf.scene.children[0].geometry}
             material={gltf.scene.children[0].material}
             onClick={onModelClick}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerMove={handlePointerMove}
         />
     );
 };
@@ -88,7 +120,7 @@ const AreaMap = () => {
             </Canvas>
             <SensorDataDisplay data={displayData} />
 
-            <p>[GLBモデルのimportテスト]</p>
+            <p>[GLBモデルのimport&ドラックしてコントロールするテスト[multiplyScalar: 0.0001] ]</p>
             <Canvas>
                 <ambientLight intensity={0.5} />
                 <Model onModelClick={() => {
