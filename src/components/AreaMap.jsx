@@ -1,7 +1,7 @@
 import '../scss/components/area-map.scss';
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { config, useSpring, animated } from "@react-spring/three";
+// import { config, useSpring, animated } from "@react-spring/three";
 
 const Box = (props) => {
     const ref = useRef();
@@ -9,24 +9,20 @@ const Box = (props) => {
     const [hovered, setHovered] = useState(false)
     useFrame(() => ref.current.rotation.x += 0.01);
 
-    const { scale } = useSpring({
-        scale: clicked ? 2 : 1,
-        config: config.wobbly,
-    });
 
     return (
-        <animated.mesh
+        <mesh
             {...props}
             ref={ref}
             onClick={() => setClicked(!clicked)}
             onPointerOver={() => setHovered(true)}
             onPointerOut={() => setHovered(false)}
-            scale={scale}
+            scale={clicked ? 2 : 1}
 
         >
             <boxGeometry args={[2, 2, 2]} />
             <meshStandardMaterial color={hovered ? "blue" : "green"} />
-        </animated.mesh>
+        </mesh >
     );
 };
 
