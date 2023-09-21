@@ -3,9 +3,10 @@ import '../scss/components/area-map.scss';
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
+import modelPath from './../glb_models/sample.glb';
 
 const Model = ({ onModelClick }) => {
-    const gltf = useGLTF('/src/glb_models/sample.glb');
+    const gltf = useGLTF(modelPath);
 
     return (
         <mesh
