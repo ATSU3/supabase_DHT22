@@ -62,7 +62,7 @@ const AreaMap = () => {
 
     return (
         <div className='area-map'>
-            <h1>(WIP)</h1>
+            <p>[クリック時に対象のAreaIDで温湿度表示がテキストで表示できるかのテスト]</p>
             <Canvas>
                 <ambientLight intensity={0.5} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
