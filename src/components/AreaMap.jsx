@@ -84,7 +84,7 @@ const Box = ({ areaId, setDisplayData, ...props }) => {
             }}
             onPointerOver={() => setHovered(true)}
             onPointerOut={() => setHovered(false)}
-            scale={clicked ? 2 : 1}
+            scale={clicked ? 1.2 : 1}
         >
             <boxGeometry args={[2, 2, 2]} />
             <meshStandardMaterial color={hovered ? "blue" : "green"} />
@@ -114,9 +114,9 @@ const AreaMap = () => {
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
                 <pointLight position={[-10, -10, -10]} />
 
-                <Box areaId={1} position={[-12, 0, 0]} setDisplayData={setDisplayData} />
+                <Box areaId={1} position={[-6, 0, 0]} setDisplayData={setDisplayData} />
                 <Box areaId={2} position={[0, 0, 0]} setDisplayData={setDisplayData} />
-                <Box areaId={3} position={[12, 0, 0]} setDisplayData={setDisplayData} />
+                <Box areaId={3} position={[6, 0, 0]} setDisplayData={setDisplayData} />
             </Canvas>
             <SensorDataDisplay data={displayData} />
 
