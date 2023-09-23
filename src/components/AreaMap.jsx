@@ -3,12 +3,10 @@ import '../scss/components/area-map.scss';
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { useGLTF } from "@react-three/drei";
-import modelPath from './../glb_models/sample.glb';
-
-
+import modelPath from './../glb_models/room.glb';
 import { Vector2 } from 'three';
 
-const Model = ({ onModelClick }) => {
+const Model = ({ onModelClick, restrictedRotation = false }) => {
     const meshRef = useRef();
     const [startPosition, setStartPosition] = useState(new Vector2());
     const [isDragging, setIsDragging] = useState(false);
@@ -28,10 +26,15 @@ const Model = ({ onModelClick }) => {
         if (!isDragging) return;
 
         const currentPosition = new Vector2(event.clientX, event.clientY);
-        const delta = currentPosition.sub(startPosition).multiplyScalar(0.0001); // 感度調整
+        const delta = currentPosition.sub(startPosition).multiplyScalar(0.0001);
 
-        meshRef.current.rotation.y += delta.x;
-        meshRef.current.rotation.x += delta.y;
+        // restrictedRotationがtrueの場合、y軸の回転だけを許可するように変更しました！
+        if (restrictedRotation) {
+            meshRef.current.rotation.y += delta.x;
+        } else {
+            meshRef.current.rotation.y += delta.x;
+            meshRef.current.rotation.x += delta.y;
+        }
 
         setStartPosition(currentPosition);
     };
@@ -120,7 +123,7 @@ const AreaMap = () => {
             </Canvas>
             <SensorDataDisplay data={displayData} />
 
-            <p>[GLBモデルのimport&ドラックしてコントロールするテスト[multiplyScalar: 0.0001] ]</p>
+            <p>[GLBモデルのimport&オブジェクト上でカーソルを動かしコントロールするテスト[multiplyScalar: 0.0001] ]</p>
             <Canvas>
                 <ambientLight intensity={0.5} />
                 <Model onModelClick={() => {
@@ -143,6 +146,34 @@ const AreaMap = () => {
                     };
                     fetchData();
                 }} />
+            </Canvas>
+
+            <p>[Y軸のみの回転の動作テスト]</p>
+            <Canvas>
+                <ambientLight intensity={0.5} />
+                <Model onModelClick={() => {
+                    const fetchData = async () => {
+                        let { data: sensorData, error } = await supabase
+                            .from('test')
+                            .select('temperature, humidity, created_at')
+                            .eq('area_id', 1)
+                            .limit(1);
+
+                        if (error) {
+                            console.error('Error fetching sensor data', error);
+                            return;
+                        }
+
+                        if (sensorData && sensorData.length > 0) {
+                            const { temperature, humidity } = sensorData[0];
+                            setDisplayData({ areaId: 1, temperature, humidity });
+                        }
+                    };
+                    fetchData();
+                }
+                }
+                    restrictedRotation={true}
+                />
             </Canvas>
         </div>
     );
